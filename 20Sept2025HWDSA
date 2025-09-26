@@ -1,0 +1,206 @@
+"""Q1 : Description Sometimes the data has few duplicate values which will affect the analysis done.
+In this problem, you will be given a list. 
+You have to find and delete the duplicates and print the updated list with no duplicates.
+Input: A list of integers. Output: A list of integers, with duplicates removed if any.
+Sample input: [8, 9, 2, 2, 3, 4, 5, 2] Sample output: [8, 9, 2, 3, 4, 5] Sample input: [4, 4, 4, 4]
+Sample output: [4] Note the order of the data did not change in input and output."""
+
+def remove_duplicates(lst):
+    seen = set()
+    result = []
+    for item in lst:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+
+# Sample inputs
+print(remove_duplicates([8, 9, 2, 2, 3, 4, 5, 2]))  # Output: [8, 9, 2, 3, 4, 5]
+print(remove_duplicates([4, 4, 4, 4]))             # Output: [4]
+
+
+"""Q2 : You will be converting a dictionary, of string(keys) and list of string (values), to a list of strings.
+Please check the sample input/output for clarification.
+Input: A dictionary with keys as strings and values as a list of strings.
+Output: A list of strings Sample input: {‘Mobile’: [‘Redmi’, ‘Samsung’, ‘Realme’], ‘Laptop’: [‘Dell’, ‘HP’], ‘TV’: [‘Videocon’, ‘Sony’] }
+Sample output: [‘Mobile_Redmi’, ‘Mobile_Samsung’, ‘Mobile_Realme’, ‘Laptop_Dell’, ‘Laptop_HP’, ‘TV_Videocon’, ‘TV_Sony’] 
+Sample input: { 'Pen': ['Gel', 'Ink', 'ball'], 'Mobile': ['Android', 'apple'] } 
+Sample output: ['Pen_Gel', 'Pen_Ink', 'Pen_ball', 'Mobile_Android', 'Mobile_apple']"""
+
+def convert_dict_to_list(data):
+    result = []
+    for key, values in data.items():
+        for value in values:
+            result.append(f"{key}_{value}")
+    return result
+
+# Sample inputs
+sample1 = {'Mobile': ['Redmi', 'Samsung', 'Realme'], 'Laptop': ['Dell', 'HP'], 'TV': ['Videocon', 'Sony']}
+sample2 = {'Pen': ['Gel', 'Ink', 'ball'], 'Mobile': ['Android', 'apple']}
+
+print(convert_dict_to_list(sample1))
+# Output: ['Mobile_Redmi', 'Mobile_Samsung', 'Mobile_Realme', 'Laptop_Dell', 'Laptop_HP', 'TV_Videocon', 'TV_Sony']
+
+print(convert_dict_to_list(sample2))
+# Output: ['Pen_Gel', 'Pen_Ink', 'Pen_ball', 'Mobile_Android', 'Mobile_apple']
+
+"""Q3 : Description You will be given a string with a lot of brackets.
+You have to print if the brackets are balanced or not. 
+Remember, there are three types of brackets: ‘( )’, ‘{ }’ and ‘[ ]’.
+Input: A string Output: Yes, if the brackets are balanced. No otherwise"""
+
+def is_balanced(s):
+    stack = []
+    bracket_map = {')': '(', '}': '{', ']': '['}
+
+    for char in s:
+        if char in bracket_map.values():
+            stack.append(char)
+        elif char in bracket_map:
+            if not stack or stack[-1] != bracket_map[char]:
+                return "No"
+            stack.pop()
+
+    return "Yes" if not stack else "No"
+
+# Sample inputs
+print(is_balanced("({[]})"))       # Output: Yes
+print(is_balanced("({[)]}"))       # Output: No
+print(is_balanced("((()))"))       # Output: Yes
+print(is_balanced("((())"))        # Output: No
+
+"""Q4 You will be given a dictionary with keys as items and values as their prices.
+You have to print the cheapest item.
+Sample input: A single line non-empty dictionary Sample output: cheapest_item name: cheapest_item_cost 
+Sample input: {'mobile1':10000, 'mobile2':11000, 'mobile3':13000, 'mobile4':9000, 'mobile5':15000, 'mobile6':16000, 'mobile7':17000, 'mobile8':18000, 'mobile9':19000} 
+Sample output: mobile4: 9000 Note: in case of a tie, whichever item came first should be the output."""
+
+def find_cheapest_item(prices):
+    min_price = float('inf')
+    min_item = None
+    for item, price in prices.items():
+        if price < min_price:
+            min_price = price
+            min_item = item
+    print(f"{min_item}: {min_price}")
+
+# Sample input
+sample = {
+    'mobile1': 10000, 'mobile2': 11000, 'mobile3': 13000,
+    'mobile4': 9000, 'mobile5': 15000, 'mobile6': 16000,
+    'mobile7': 17000, 'mobile8': 18000, 'mobile9': 19000
+}
+
+find_cheapest_item(sample)
+# Output: mobile4: 9000
+
+
+"""Q5 You will be given a list of repeated elements.
+You have to find the maximum distance between two same elements.
+The answer will be zero if there are no repeated elements.
+Input: A non-empty list of integers.
+Output: A single integer denoting the maximum distance between two same integers.
+Sample input: [1, 2, 3, 2, 5, 1, 2, 4, 6, 2, 7, 8, 6]
+Sample output: 8
+Explanation: Max distance for 1: 5 Max distance for 2: 8 Max distance for 3: 0 Max distance for 4: 0 Max distance for 5: 0 Max distance for 6: 4 Max distance for 7: 0 Max distance for 8: 0"""
+
+def max_distance(lst):
+    index_map = {}
+    max_dist = 0
+
+    for i, num in enumerate(lst):
+        if num in index_map:
+            dist = i - index_map[num]
+            max_dist = max(max_dist, dist)
+        else:
+            index_map[num] = i
+
+    return max_dist
+
+# Sample input
+sample = [1, 2, 3, 2, 5, 1, 2, 4, 6, 2, 7, 8, 6]
+print(max_distance(sample))  # Output: 8
+
+
+"""Q6 Your team is going for camping and you are taking a vote to decide what food to pack for dinner.
+Everyone gets a vote and the food item that gets at least one more than half of the votes wins.
+None of the items wins if nothing gets at least one more than half votes.
+Assume that every person gets only one vote.
+The input will contain a list of food items where each occurrence of an item represents one vote.
+You should print the winning food item as output. If there is no clear winner, print "NOTA". Sample Input: ["pasta","pasta","pasta","pasta","pasta","paratha","paratha","paratha"] Sample Output: pasta"""
+
+from collections import Counter
+
+def find_winner(votes):
+    vote_count = Counter(votes)
+    total_votes = len(votes)
+    majority = total_votes // 2 + 1
+
+    for item, count in vote_count.items():
+        if count >= majority:
+            return item
+    return "NOTA"
+
+# Sample input
+sample = ["pasta", "pasta", "pasta", "pasta", "pasta", "paratha", "paratha", "paratha"]
+print(find_winner(sample))  # Output: pasta
+
+"""Q7 Consider a nested dictionary as follows: {'Fruit': 1, 'Vegetable': {'Cabbage': 2, 'Cauliflower': 3}, 'Spices': 4} 
+Your task is to flatten a nested dictionary and join the nested keys with the "_" character.
+For the above dictionary, the flattened dictionary would be as follows: {'Fruit': 1, 'Vegetable_Cabbage': 2, 'Vegetable_Cauliflower': 3, 'Spices': 4}
+The input will have a nested dictionary. The output should have two lists. The first list will have keys and the second list should have values. Both lists should be sorted."""
+
+def flatten_dict(d, parent_key='', sep='_'):
+    flat_dict = {}
+    for k, v in d.items():
+        new_key = f"{parent_key}{sep}{k}" if parent_key else k
+        if isinstance(v, dict):
+            flat_dict.update(flatten_dict(v, new_key, sep=sep))
+        else:
+            flat_dict[new_key] = v
+    return flat_dict
+
+# Sample input
+nested_dict = {'Fruit': 1, 'Vegetable': {'Cabbage': 2, 'Cauliflower': 3}, 'Spices': 4}
+
+# Flatten and sort
+flat = flatten_dict(nested_dict)
+sorted_keys = sorted(flat.keys())
+sorted_values = [flat[k] for k in sorted_keys]
+
+print("Keys:", sorted_keys)
+print("Values:", sorted_values)
+
+"""Q 8 In the binary search, you kept reducing the search space into half of the previous search space.
+In this question, can you similarly reduce the search space in one-third of the last space search and write a searching algorithm?
+Input: A non-empty sorted list of unique integers in line one The integer key to be found in line two 
+Output: Index of the element key if it is present in the list, else -1
+Sample input: [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27] 17
+Sample output: 7 Sample input: [3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27] 1 Sample output: -1"""
+
+def ternary_search(arr, key):
+    left, right = 0, len(arr) - 1
+
+    while left <= right:
+        third = (right - left) // 3
+        mid1 = left + third
+        mid2 = right - third
+
+        if arr[mid1] == key:
+            return mid1
+        if arr[mid2] == key:
+            return mid2
+
+        if key < arr[mid1]:
+            right = mid1 - 1
+        elif key > arr[mid2]:
+            left = mid2 + 1
+        else:
+            left = mid1 + 1
+            right = mid2 - 1
+
+    return -1
+
+# Sample inputs
+print(ternary_search([3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27], 17))  # Output: 7
+print(ternary_search([3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25, 27], 1))   # Output: -1
